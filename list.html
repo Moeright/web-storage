@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>列表页</title>
+    <style type="text/css">
+    .list{width: 1300px;height: auto;padding: 20px;}
+    li{width: 200px;height:300px;float: left;margin: 10px;}
+    img{width: 200px;height: 200px;}
+    </style>
+  </head>
+  <body>
+    <ul class="list">
+    </ul>
+    <script  src="jquery-1.11.1.min.js"></script>
+    <script type="text/javascript">
+      var aData = [];
+      $.getJSON("http://datainfo.duapp.com/shopdata/getGoods.php?callback=?",function (data) {
+        console.log(data);
+        aData = data;
+        var str="";
+        for (var i = 0; i < data.length; i++) {
+          str+=`
+            <li>
+              <a href="javascript:;" data-id="${data[i].goodsID}"><img src="${data[i].goodsListImg}"/></a>
+              <p>${data[i].goodsName}</p>
+              <p>价格：￥<em>${data[i].price}</em></p>
+            </li>
+          `
+        }
+        $(".list").html(str);
+      });
+
+      $(document).on("click","a",function () {
+          var id = $(this).attr("data-id");
+          var proData = {};
+          for (var i = 0; i <aData.length; i++) {
+            if (aData[i].goodsID==id) {
+              proData=aData[i];
+              break
+            }
+          }
+            console.log(proData);
+
+            var proHistory= JSON.parse(localStorage.getItem("proHistory")||'[]');
+            for (var i = 0; i < proHistory.length; i++) {
+              if (proHistory[i].goodsID == id) {
+                proHistory.splice(i,1);
+              }
+
+            }
+
+
+            proHistory.unshift(proData);
+            localStorage.setItem("proHistory",JSON.stringify(proHistory));
+            window.location.href="detail.html?goodsID="+id;
+            // 点击将数据插入到历史记录的数据里
+      });
+
+
+    </script>
+  </body>
+</html>

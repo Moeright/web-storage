@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>history</title>
+    <style type="text/css">
+    .list{width: 1300px;height: auto;padding: 20px;}
+    li{width: 200px;height:300px;float: left;margin: 10px;}
+    img{width: 200px;height: 200px;}
+    </style>
+  </head>
+  <body>
+    <h1>浏览记录</h1>
+    <ul class="list">
+
+    </ul>
+    <script src="jquery-1.11.1.min.js"></script>
+    <script type="text/javascript">
+    // 如果直接使用字符串，无法设置数据样式，使用数据要用对象的格式
+
+      var proHistory = JSON.parse(localStorage.getItem("proHistory"));
+      var str="";
+      for (var i = 0; i < proHistory.length; i++) {
+        str+=`
+          <li>
+            <a href="javascript:;" data-id="${proHistory[i].goodsID}"><img src="${proHistory[i].goodsListImg}"/></a>
+            <p>${proHistory[i].goodsName}</p>
+            <p>价格：￥<em>${proHistory[i].price}</em></p>
+          </li>
+        `
+      }
+      $('.list').html(str);
+    </script>
+  </body>
+</html>
